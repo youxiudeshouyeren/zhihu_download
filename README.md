@@ -43,6 +43,13 @@ brew install pango harfbuzz cairo pango gdk-pixbuf
 
 ## Web UI方式（推荐）
 
+```python
+python web/server.py
+```
+
+浏览器访问：http://localhost:8000
+
+
 配置cookie和输出路径
 
 ![](./assets/4_ui.png)
