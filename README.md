@@ -19,9 +19,7 @@
 
 ---
 
-## 快速开始
-
-### 1. 安装依赖
+## 安装依赖
 
 ```bash
 pip install -r requirements.txt
@@ -37,21 +35,50 @@ sudo apt-get install libpango1.0-dev libharfbuzz-dev libffi-dev libcairo2-dev
 brew install pango harfbuzz cairo pango gdk-pixbuf
 ```
 
-### 2. 配置 Cookie
+## 获取cookie
+
+获取方式：使用Cookie Editor浏览器插件，如下图：
+
+![](./assets/how_to_get_cookie.png)
+
+## Web UI方式（推荐）
+
+配置cookie和输出路径
+
+![](./assets/4_ui.png)
+
+获取收藏夹url，并填入
+
+![](./assets/how_to_get_url.png)
+
+![](./assets/1_ui.png)
+
+选择要导出的文章列表
+
+![](./assets/2_ui.png)
+
+导出，等待进度条
+![](./assets/3_ui.png)
+
+## 命令行方式
+###  配置 Cookie
 
 ```bash
 python cli/main.py auth
 ```
 
-按提示输入 Cookie 字符串。获取方式：浏览器访问知乎 -> F12 开发者工具 -> Network 标签 -> 复制请求头中的 Cookie
+按提示输入 Cookie 字符串。
 
-### 3. 列出收藏夹
+
+### 列出收藏夹
+
+该功能暂时不可用
 
 ```bash
 python cli/main.py list
 ```
 
-### 4. 导出收藏夹
+### 导出收藏夹
 
 ```bash
 # 导出为 Markdown
@@ -72,7 +99,7 @@ python cli/main.py export <COLLECTION_ID> -f md -f pdf -f html -f csv
 
 ---
 
-## 命令参考
+### 命令参考
 
 | 命令 | 描述 |
 |------|------|
@@ -81,7 +108,7 @@ python cli/main.py export <COLLECTION_ID> -f md -f pdf -f html -f csv
 | `export` | 导出指定收藏夹 |
 | `zip` | 打包已导出的收藏夹为 ZIP |
 
-### export 命令选项
+#### export 命令选项
 
 ```
 --output, -o PATH    输出目录 (默认：./downloads)
@@ -93,7 +120,7 @@ python cli/main.py export <COLLECTION_ID> -f md -f pdf -f html -f csv
 --dedupe             启用内容去重
 ```
 
-### zip 命令选项
+#### zip 命令选项
 
 ```
 --output, -o PATH    输出目录 (默认：./downloads)
@@ -101,7 +128,7 @@ python cli/main.py export <COLLECTION_ID> -f md -f pdf -f html -f csv
 --no-timestamp       文件名不包含时间戳
 ```
 
-### 输出目录结构
+#### 输出目录结构
 
 ```
 downloads/collection_<ID>/
@@ -198,9 +225,6 @@ python cli/main.py export <COLLECTION_ID> --dedupe
 
 ---
 
-## 待开发功能
-
-- [ ] 内容去重完整实现（目前仅基于 URL 去重）
 
 ---
 
@@ -248,7 +272,7 @@ python cli/main.py export <COLLECTION_ID> --dedupe
 
 ## 参考项目
 
-基于 [Zhihu-Collections-MCP](https://github.com/YZFly/Zhihu-Collections-MCP) 项目改造增强
+基于 [Zhihu-Collections-MCP](https://github.com/JasonJarvan/Zhihu-Collections-MCP) 项目改造增强
 
 ---
 
