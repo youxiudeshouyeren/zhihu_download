@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>知乎收藏夹导出工具</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <!-- 侧边栏 -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <div class="logo">
+                <span class="logo-icon">📚</span>
+                <h1>知乎收藏夹<br>导出工具</h1>
+            </div>
+        </div>
+
+        <nav class="sidebar-nav">
+            <a href="#" class="nav-item active" data-page="collections">
+                <span class="nav-icon">📑</span>
+                <span>收藏夹管理</span>
+            </a>
+            <a href="#" class="nav-item" data-page="articles">
+                <span class="nav-icon">📄</span>
+                <span>文章列表</span>
+            </a>
+            <a href="#" class="nav-item" data-page="tasks">
+                <span class="nav-icon">⚙️</span>
+                <span>导出任务</span>
+            </a>
+            <a href="#" class="nav-item" data-page="settings">
+                <span class="nav-icon">🔧</span>
+                <span>设置</span>
+            </a>
+        </nav>
+
+        <div class="sidebar-footer">
+            <div class="status-indicator" id="cookieStatus">
+                <span class="status-dot"></span>
+                <span class="status-text">未连接</span>
+            </div>
+        </div>
+    </aside>
+
+    <!-- 主内容区 -->
+    <main class="main-content">
+        <!-- 收藏夹管理页面 -->
+        <section class="page active" id="page-collections">
+            <div class="page-header">
+                <h2>收藏夹管理</h2>
+                <p>管理您的知乎收藏夹，选择要导出的收藏夹</p>
+            </div>
+
+            <div class="content-area">
+                <!-- 收藏夹输入区 -->
+                <div class="card input-card">
+                    <h3><span class="card-icon">🔗</span> 添加收藏夹</h3>
+                    <div class="input-group">
+                        <input type="text" id="collectionUrlInput" placeholder="粘贴收藏夹 URL 或 ID，例如：https://www.zhihu.com/collection/998150123">
+                        <button class="btn btn-primary" onclick="addCollection()">
+                            <span>➕</span> 添加
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 收藏夹列表 -->
+                <div class="card">
+                    <h3><span class="card-icon">📋</span> 我的收藏夹</h3>
+                    <div class="collections-list" id="collectionsList">
+                        <div class="loading-state">
+                            <div class="spinner"></div>
+                            <p>加载中...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 文章列表页面 -->
+        <section class="page" id="page-articles">
+            <div class="page-header">
+                <h2>文章列表</h2>
+                <p>选择要导出的文章</p>
+            </div>
+
+            <div class="content-area">
+                <!-- 工具栏 -->
+                <div class="toolbar">
+                    <div class="toolbar-left">
+                        <span class="selected-info" id="selectedInfo">未选择收藏夹</span>
+                    </div>
+                    <div class="toolbar-right">
+                        <button class="btn btn-secondary" onclick="selectAllArticles()">全选</button>
+                        <button class="btn btn-secondary" onclick="selectNoneArticles()">取消全选</button>
+                        <button class="btn btn-secondary" onclick="selectInverseArticles()">反选</button>
+                    </div>
+                </div>
+
+                <!-- 文章列表 -->
+                <div class="card">
+                    <div class="articles-list" id="articlesList">
+                        <div class="empty-state">
+                            <span class="empty-state-icon">📄</span>
+                            <p>请先选择一个收藏夹</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 导出操作栏 -->
+                <div class="export-bar" id="exportBar">
+                    <div class="export-options">
+                        <label class="option-label">
+                            <input type="checkbox" name="format" value="md" checked>
+                            <span class="option-check"></span>
+                            <span class="option-text">Markdown</span>
+                        </label>
+                        <label class="option-label">
+                            <input type="checkbox" name="format" value="pdf" checked>
+                            <span class="option-check"></span>
+                            <span class="option-text">PDF</span>
+                        </label>
+                        <label class="option-label">
+                            <input type="checkbox" name="format" value="html">
+                            <span class="option-check"></span>
+                            <span class="option-text">HTML</span>
+                        </label>
+                        <label class="option-label">
+                            <input type="checkbox" name="format" value="csv">
+                            <span class="option-check"></span>
+                            <span class="option-text">CSV</span>
+                        </label>
+                    </div>
+                    <button class="btn btn-success btn-large" onclick="startExport()">
+                        <span>🚀</span> 开始导出 (<span id="selectedCount">0</span> 篇)
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- 导出任务页面 -->
+        <section class="page" id="page-tasks">
+            <div class="page-header">
+                <h2>导出任务</h2>
+                <p>查看导出任务进度和历史记录</p>
+            </div>
+
+            <div class="content-area">
+                <div class="tasks-list" id="tasksList">
+                    <div class="empty-state">
+                        <span class="empty-state-icon">📋</span>
+                        <p>暂无任务</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 设置页面 -->
+        <section class="page" id="page-settings">
+            <div class="page-header">
+                <h2>设置</h2>
+                <p>配置 Cookie 和导出选项</p>
+            </div>
+
+            <div class="content-area">
+                <!-- Cookie 配置 -->
+                <div class="card">
+                    <h3><span class="card-icon">🍪</span> Cookie 配置</h3>
+                    <div class="form-group">
+                        <label>Cookie JSON 文件内容</label>
+                        <textarea id="cookieInput" placeholder='粘贴 cookies.json 文件内容，格式如：[{"name": "z_c0", "value": "..."}]'></textarea>
+                        <div class="form-actions">
+                            <button class="btn btn-primary" onclick="saveCookies()">保存 Cookie</button>
+                            <button class="btn btn-secondary" onclick="loadCookies()">加载当前 Cookie</button>
+                            <button class="btn btn-danger" onclick="clearCookies()">清除 Cookie</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 导出目录配置 -->
+                <div class="card">
+                    <h3><span class="card-icon">📁</span> 导出目录配置</h3>
+                    <div class="form-group">
+                        <label>输出目录</label>
+                        <input type="text" id="outputDirInput" value="./downloads" placeholder="例如：./downloads 或 /home/user/zhihu_exports">
+                        <p class="form-help">请输入导出目录的绝对路径或相对路径，例如：<code>./downloads</code> 或 <code>/home/user/zhihu_exports</code></p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- 通知弹窗 -->
+    <div class="notification-container" id="notificationContainer"></div>
+
+    <script src="/static/js/app.js"></script>
+</body>
+</html>
